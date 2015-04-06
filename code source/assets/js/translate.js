@@ -14,8 +14,6 @@ function loadBundles(lang) {
 		mode : 'both',
 		language : lang,
 		callback : function() {
-			//$("#msg_welcome").text($.i18n.prop('msg_welcome'));
-			$("#msg_welcome").text(msg_welcome);
-			$("#msg_selLang").text(msg_selLang(lang));
+			//Here
 		}
 	});
