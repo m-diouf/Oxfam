@@ -42,6 +42,9 @@ class ActiviteB {
 		$this->$unnamed_LigneBudget_ = new LigneBudget($libelle, $montantPrevu);
 	}
 
+   //functions et methodes
+	
+
 	//getters et setters
 	public function setLibelle($libelle){
 		$this->$libelle = $libelle;

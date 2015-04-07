@@ -1,11 +1,9 @@
-  --- creation de type pour les différentes classes du diagramme de classes proposé par la conception
-
+ -- creation de type pour les différentes classes du diagramme de classes proposé par la conception
  -- 1 -- création du type de la classe LigneBudget  et tout ce qui s'y rattache
  CREATE TYPE t_ligneBudget AS object(
  	libelle varchar(30),
  	montantPrevu number,
  	montantExecute number
-
  	); 
 -- la classe ActiviteB est une aggrègation de la clASse LigneBudget
 -- donc elle a une vue sur la clASse LigneBudget et contient une liste de la clASse LigneBudget
