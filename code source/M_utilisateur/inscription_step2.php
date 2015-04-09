@@ -131,7 +131,7 @@ require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php'
 		<div class="frontoffstat_piedpage">
 		Infos OXFAM / Phone / Adresse / etc. 
 		</div>
-		<hr / class="ligne_rouge">
+		<hr class="ligne_rouge" />
 </footer>
  
 
