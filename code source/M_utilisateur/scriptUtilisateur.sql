@@ -52,12 +52,21 @@ CREATE TABLE utilisateurs of t_utilisateur;
 --   FOREIGN KEY (column1, column2, ... column_n)
 --   REFERENCES parent_table (column1, column2, ... column_n);
 
-CREATE OR REPLACE TYPE t_AgentOxfam UNDER t_groupe_utilisateur;
-	CREATE OR REPLACE TYPE t_AgentValidation UNDER t_AgentOxfam;
-	CREATE OR REPLACE TYPE t_AgentControle UNDER t_AgentOxfam;
-	CREATE OR REPLACE TYPE t_Admin UNDER t_AgentOxfam;
+CREATE OR REPLACE TYPE t_AgentOxfam UNDER t_groupe_utilisateur() NOT FINAL;
+	CREATE OR REPLACE TYPE t_AgentValidation UNDER t_AgentOxfam();
+	CREATE OR REPLACE TYPE t_AgentControle UNDER t_AgentOxfam();
+	CREATE OR REPLACE TYPE t_Admin UNDER t_AgentOxfam();
 
-CREATE OR REPLACE TYPE t_AgentProjet UNDER t_groupe_utilisateur NOT FINAL;
-	CREATE OR REPLACE TYPE t_Operateur UNDER t_AgentProjet;
-	CREATE OR REPLACE TYPE t_Gestionnaire UNDER t_AgentProjet;
+CREATE OR REPLACE TYPE t_AgentProjet UNDER t_groupe_utilisateur() NOT FINAL;
+	CREATE OR REPLACE TYPE t_Operateur UNDER t_AgentProjet();
+	CREATE OR REPLACE TYPE t_Gestionnaire UNDER t_AgentProjet();
+
+INSERT INTO privilegesApp VALUES ( t_privilege('Gestion De Projets', 'GEST_PROJ'));
+INSERT INTO privilegesApp VALUES ( t_privilege('Gestion Controle', 'GEST_CTRL'));
+INSERT INTO privilegesApp VALUES ( t_privilege('Administration Oxfam Report', 'ADMIN_OX_RPT'));
+
+INSERT INTO structure VALUES ( t_structure('Default') );
+
+	
+
 
