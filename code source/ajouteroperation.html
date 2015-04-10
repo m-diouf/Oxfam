@@ -128,13 +128,13 @@
             </div>
             <div class="col_12 ">
                 <div class="col_6 ">
-                    <label class="col_4" id=""> Date opération</label>
+                    <label class="col_4" id="lb_dateOp"> Date opération</label>
                     <input type="date" class="col_6 fright">
                 </div>
             </div>
             <div class="col_12 ">
                 <div class="col_5 ">
-                    <label class="col_4"> Type opération</label>
+                    <label class="col_4" id="lb_typeOp"> Type opération</label>
                     <select class="col_7 fright">
                         <option value="">Caisse/Banque</option>
                     </select>
@@ -142,35 +142,35 @@
             </div>
             <div class="col_12 ">
                 <div class="col_6 ">
-                    <label for="depense" class="col_4"> Libellé dépense</label>
+                    <label for="depense" class="col_4" id="lb_depense"> Libellé dépense</label>
                     <input type="text" id="depense" class="col_6 fright" placeholder="Montatnt opération">
                 </div>
                 <div class="col_6">
-                    <label class="col_4"> Référence paiement</label>
+                    <label class="col_4" id="lb_refPaiement"> Référence paiement</label>
                     <input type="text" id="reference" class="col_6 fright" placeholder="Numéro référence">
                 </div>
             </div>
             <div class="col_12 ">
                 <div class="col_6 ">
-                    <label class="col_4"> Montant opération</label>
+                    <label class="col_4" id="lb_montantOp"> Montant opération</label>
                     <input type="date" class="col_6 fright" placeholder="xxxxxxxxxxxx F" />
                 </div>
             </div>
             <div class="col_12 ">
                 <div class="notice col_6">
                     <div class="col_12 ">
-                        <label class="col_6"> Solde ligne après opération</label>
+                        <label class="col_6" id="lb_soldeApresOp"> Solde ligne après opération</label>
                         <span class="col_6 notice fright">xxxxxxxxxxxxx F</span>
                     </div>
                     <div class="col_12 ">
-                        <label class="col_6"> Solde ligne après opération</label>
+                        <label class="col_6" id="lb_soldLigneApresOp" > Solde ligne après opération</label>
                         <span class="col_6 notice fright">xxxxxxxxxxxxx F </span>
                     </div>
                 </div>
                 <div class="col_3">
                     <br />
                     <br />
-                    <button class="small green pill fright  icon-circle-arrow-right" type="submit">
+                    <button class="small green pill fright  icon-circle-arrow-right" type="submit" id="btn_save">
 						Enregistrer opération
                     </button>
                 </div>
@@ -179,12 +179,12 @@
                 <p class="col_6">
                     <span class="icon-download fsize45"></span>
                     <br />
-                    <span>Générer Etat</span>
+                    <span id="lb_genererEtat">Générer Etat</span>
                 </p>
                 <p class="col_6">
                     <span class="icon-print fsize45"></span>
                     <br />
-                    <span>Imprimer Opération </span>
+                    <span id="lb_print">Imprimer Opération </span>
                 </p>
             </div>
         </div>
