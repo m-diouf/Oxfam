@@ -1,179 +1,192 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>OxFam| Connexion</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="" />
-		<meta name="copyright" content="" />
-		<link rel="stylesheet" type="text/css" href="assets/css/style.css" media="all" />
-		<link rel="stylesheet" type="text/css" href="assets/css/login.css" media="all" />
-		<link rel="stylesheet" type="text/css" href="assets/style.css" media="all" />
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="assets/js/js.js"></script>
-	</head>
-	<body style="padding-left: 60px; padding-right: 60px;">
-		<div class="width80">
-			<div class="col_12">
-				<img class="col_2" src="assets/img/logo.png" />
-				<p class="col_2">
+    <head>
+        <title>OxFam| Connexion</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="copyright" content="" />
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="assets/css/login.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="assets/style.css" media="all" />
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/js.js"></script>
+
+        <!-- Pour l'internationalisation -->
+        <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="assets/js/jquery.i18n.properties-min-1.0.9.js"></script>
+        <script type="text/javascript" src="assets/js/translate_ajouteoperation.js"></script>
+
+    </head>
+    <body style="padding-left: 60px; padding-right: 60px;">
+        <div class="width80">
+            <div class="col_12">
+                <img class="col_2" src="assets/img/logo.png" alt="Logo" />
+                <p class="col_2">
 					OXFAM
-				</p>
-				<img class="col_2" src="assets/img/logo.png" />
-				<div class="col_4">
-					<span class="col_12">Bienvenue à </span><span class="col_12"><span class="col_6">Prenom </span><span class="col_6">NOM </span></span><span class="col_12">Nom du projet / Pays</span>
-					<span class="col_12">
-						<select>
-							<option value="">-- Choix langue --</option>
-							<option value="">Français</option>
-							<option value="">Anglais</option>
-						</select> </span>
-				</div>
-				<div class="col_2">
-					<button class="small vert pill fright  icon-signout" type="submit">
+                </p>
+                <img class="col_2" src="assets/img/logo.png" alt="Logo" />
+                <div class="col_4">
+                    <span class="col_12" id="msg_welcome">Bienvenue à </span>
+                    <span class="col_12">
+                        <span class="col_6">Prenom </span>
+                        <span class="col_6">NOM </span>
+                    </span>
+                    <span class="col_12">Nom du projet / Pays</span>
+                    <span class="col_12">
+                        <select id="lang">
+                            <option value="browser">-- Choix langue --</option>
+                            <option value="fr">Français</option>
+                            <option value="en">Anglais</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="col_2">
+                    <button class="small vert pill fright  icon-signout" type="submit" id="btn_quit">
 						Quitter
-					</button>
-				</div>
-			</div>
-			<ul class="breadcrumbs col_6">
-				<li>
-					<a href="">Home</a>
-				</li>
-				<li>
-					<a href="">Module</a>
-				</li>
-				<li>
-					<a href="">Sous Module</a>
-				</li>
-			</ul>
-			<p class="col_6 fright txtalignright">
+                    </button>
+                </div>
+            </div>
+            <ul class="breadcrumbs col_6">
+                <li>
+                    <a href="" id="lnk_accueil">Accueil</a>
+                </li>
+                <li>
+                    <a href="" id="lnk_module">Module</a>
+                </li>
+                <li>
+                    <a href="" id="lnk_smodule">Sous-Module</a>
+                </li>
+            </ul>
+            <p class="col_6 fright txtalignright">
 				jj/mm/yy hh:mm
-			</p>
-			<img class="col_12 sparatorh2" src="assets/img/separateur.png" />
-			<div class="col_6">
-				<span class="col_6 icon-dashboard fsize45"></span>
-				<div class="col_6">
-					<br />
-					<span>Gestion Operations</span>
-				</div>
-			</div>
-			<div class="col_4 fright txtalignright">
-				<div class="notice error">
-					<i class="icon-remove-sign icon-large"></i>Alerte Opération / Dépassement <a href="#close"
-					class="icon-remove"></a>
-				</div>
-			</div>
-			<div class="col_12">
-				<span class="col_4">
-					<br />
+            </p>
+            <img class="col_12 sparatorh2" src="assets/img/separateur.png" alt="Seperator" />
+            <div class="col_6">
+                <span class="col_6 icon-dashboard fsize45"></span>
+                <div class="col_6">
+                    <br />
+                    <span id="lb_gestOp">Gestion Operations</span>
+                </div>
+            </div>
+            <div class="col_4 fright txtalignright">
+                <div class="notice error" id="lb_error">
+                    <i class="icon-remove-sign icon-large"></i>
+                    Alerte Opération / Dépassement <a href="#close" class="icon-remove"></a>
+                </div>
+            </div>
+            <div class="col_12">
+                <span class="col_4" id="lb_budget">
+                    <br />
 					Info budget </span>
-				<div class="col_4 ">
-					<div class="notice ">
-						Période en cours : MM/YYYY
-					</div>
-				</div>
-			</div>
-			<img class="col_12 sparatorh2" src="assets/img/separateur.png" />
-			<div class="col_12 ">
-				<div class="notice  col_4 fright txtalignright">
-					Budget Restant Ligne : XXXXXXX F
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_5 ">
-					<label class="col_4"> Choix du Thème</label>
-					<select class="col_7 fright">
-						<option value="">-- Liste thèmes --</option>
-					</select>
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_5 ">
-					<label for="rubrique" class="col_4"> Choix rubrique</label>
-					<select id="rubrique" class="col_7 fright">
-						<option value="">-- Liste rubriques --</option>
-					</select>
-				</div>
-				<div class="col_2"></div>
-				<div class="col_5">
-					<label class="col_4"> Choix ligne</label>
-					<select class="col_7 fright">
-						<option value="">-- Liste lignes budgétaires --</option>
-					</select>
-				</div>
-			</div>
-			<div class="col_12">
-				<span class="col_4">
-					<br />
-					Infos opération </span>
-			</div>
-			<img class="col_12 sparatorh2" src="assets/img/separateur.png" />
-			<div class="col_12 ">
-				<div class="notice  col_4 fright txtalignright">
+                <div class="col_4 ">
+                    <div class="notice ">
+                        <span id="lb_period">Période en cours</span> : MM/YYYY
+                    </div>
+                </div>
+            </div>
+            <img class="col_12 sparatorh2" src="assets/img/separateur.png" alt="Separateur" />
+            <div class="col_12 ">
+                <div class="notice  col_4 fright txtalignright">
+                    <span id="lb_leftBudget">Budget Restant Ligne</span> : XXXXXXX F
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_5 ">
+                    <label class="col_4" id="lb_chTheme">Choix du Thème</label>
+                    <select class="col_7 fright">
+                        <option value="">-- Liste thèmes --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_5 ">
+                    <label for="rubrique" class="col_4" id="lb_chRubrique"> Choix rubrique</label>
+                    <select id="rubrique" class="col_7 fright">
+                        <option value="">-- Liste rubriques --</option>
+                    </select>
+                </div>
+                <div class="col_2"></div>
+                <div class="col_5">
+                    <label class="col_4" id="lb_chLigne"> Choix ligne</label>
+                    <select class="col_7 fright">
+                        <option value="">-- Liste lignes budgétaires --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col_12">
+                <br />
+                <span class="col_4" id="lb_infoOp">
+                    Infos opération
+                </span>
+            </div>
+            <img class="col_12 sparatorh2" src="assets/img/separateur.png" alt="Separator" />
+            <div class="col_12 ">
+                <div class="notice  col_4 fright txtalignright" id="lb_numOp">
 					Numéro opération
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_6 ">
-					<label class="col_4"> Date opération</label>
-					<input type="date" class="col_6 fright">
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_5 ">
-					<label class="col_4"> Type opération</label>
-					<select class="col_7 fright">
-						<option value="">Caisse/Banque</option>
-					</select>
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_6 ">
-					<label for="depense" class="col_4"> Libellé dépense</label>
-					<input type="text" id="depense" class="col_6 fright" placeholder="Montatnt opération">
-				</div>
-				<div class="col_6">
-					<label class="col_4"> Référence paiement</label>
-					<input type="text" id="reference" class="col_6 fright" placeholder="Numéro référence">
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="col_6 ">
-					<label class="col_4"> Montant opération</label>
-					<input type="date" class="col_6 fright" placeholder="xxxxxxxxxxxx F" />
-				</div>
-			</div>
-			<div class="col_12 ">
-				<div class="notice col_6">
-					<div class="col_12 ">
-						<label class="col_6"> Solde ligne après opération</label>
-						<span class="col_6 notice fright">xxxxxxxxxxxxx F</span>
-					</div>
-					<div class="col_12 ">
-						<label class="col_6"> Solde ligne après opération</label>
-						<span class="col_6 notice fright">xxxxxxxxxxxxx F </span>
-					</div>
-				</div>
-				<div class="col_3">
-					<br />
-					<br />
-					<button class="small green pill fright  icon-circle-arrow-right" type="submit">
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_6 ">
+                    <label class="col_4" id=""> Date opération</label>
+                    <input type="date" class="col_6 fright">
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_5 ">
+                    <label class="col_4"> Type opération</label>
+                    <select class="col_7 fright">
+                        <option value="">Caisse/Banque</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_6 ">
+                    <label for="depense" class="col_4"> Libellé dépense</label>
+                    <input type="text" id="depense" class="col_6 fright" placeholder="Montatnt opération">
+                </div>
+                <div class="col_6">
+                    <label class="col_4"> Référence paiement</label>
+                    <input type="text" id="reference" class="col_6 fright" placeholder="Numéro référence">
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="col_6 ">
+                    <label class="col_4"> Montant opération</label>
+                    <input type="date" class="col_6 fright" placeholder="xxxxxxxxxxxx F" />
+                </div>
+            </div>
+            <div class="col_12 ">
+                <div class="notice col_6">
+                    <div class="col_12 ">
+                        <label class="col_6"> Solde ligne après opération</label>
+                        <span class="col_6 notice fright">xxxxxxxxxxxxx F</span>
+                    </div>
+                    <div class="col_12 ">
+                        <label class="col_6"> Solde ligne après opération</label>
+                        <span class="col_6 notice fright">xxxxxxxxxxxxx F </span>
+                    </div>
+                </div>
+                <div class="col_3">
+                    <br />
+                    <br />
+                    <button class="small green pill fright  icon-circle-arrow-right" type="submit">
 						Enregistrer opération
-					</button>
-				</div>
-			</div>
-			<div class="col_4 ">
-				<p class="col_6">
-					<span class="icon-download fsize45"></span>
-					<br />
-					<span>Générer Etat</span>
-				</p>
-				<p class="col_6">
-					<span class="icon-print fsize45"></span>
-					<br />
-					<span>Imprimer Opération </span>
-				</p>
-			</div>
-		</div>
-	</body>
+                    </button>
+                </div>
+            </div>
+            <div class="col_4 ">
+                <p class="col_6">
+                    <span class="icon-download fsize45"></span>
+                    <br />
+                    <span>Générer Etat</span>
+                </p>
+                <p class="col_6">
+                    <span class="icon-print fsize45"></span>
+                    <br />
+                    <span>Imprimer Opération </span>
+                </p>
+            </div>
+        </div>
+    </body>
 </html>
