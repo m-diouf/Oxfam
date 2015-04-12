@@ -29,10 +29,10 @@ class Mois {
 	 */
 	public $unnamed_PlanMensuel_;
 	//constructor
-	public function __construct($code, $libelle, $etat){
+	public function __construct($code, $libelle){
 		$this->$code = $code;
 		$this->$libelle = $libelle;
-		$this->$etat  =$etat;
+		$this->$etat  ="ouvert";
 	}
 
 	///getters et setters

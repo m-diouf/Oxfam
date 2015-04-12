@@ -33,5 +33,12 @@ class PlanAnnuel {
 	 * @AssociationKind Composition
 	 */
 	public $unnamed_PlanMensuel_;
+	//constructeur
+	public function __construct($libelle, $code, $montamtTotalPrevu){
+		$this->$libelle = $libelle;
+		$this->$code = $code;
+		$this->$montamtTotalPrevu = $montamtTotalPrevu;
+		$this->$unnamed_PlanMensuel_ = new PlanMensuel($code, $libelle);
+	}
 }
 ?>

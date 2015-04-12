@@ -41,6 +41,10 @@ class LigneBudget {
 
 	}
 
+	public function listeLigneBudget(){
+		$tab = array();
+	}
+
 	//geters et setters
 	public function setLibelle($libelle){
 		$this->$libelle = $libelle;

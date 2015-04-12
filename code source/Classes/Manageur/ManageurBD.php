@@ -60,7 +60,7 @@ class ManageurBD{
 	*/
 		public static function getInstance(){
 		if(is_null(self::$instance)){
-		self::$instance = new ManageurBD();
+			self::$instance = new ManageurBD();
 		}
 		return self::$instance;
 	}

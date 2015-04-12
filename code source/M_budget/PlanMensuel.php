@@ -36,15 +36,15 @@ class PlanMensuel {
 	public $unnamed_ElementPlanMensuel_;
 
 	//constructors
-	public function __construct($code, $libelle){
+	/*public function __construct($code, $libelle){
 		$this->$code =$code;
 		$this->$libelle = $libelle;
-	}
+	}*/
 	
 	public function __construct($code, $libelle, $montant){
 		$this->$code =$code;
 		$this->$libelle = $libelle;
-		$this->$unnamed_ElementPlanMensuel_ = new ElementPlanMensuel($code, $libelle, $montant);
+		//$this->$unnamed_ElementPlanMensuel_ = new ElementPlanMensuel[];
 	}
 
 	//getters et setters
