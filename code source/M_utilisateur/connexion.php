@@ -1,9 +1,11 @@
 <?php 
+session_start();
 require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
 $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
- if (isset($_SESSION['utilisateur'])){//s il ya un utilisateur connecter on le redirige
+ if (isset($_SESSION['utilisateur'])){//s il ya un utilisateur connecte on fait  une redirection
 	 $user =  unserialize($_SESSION['utilisateur']);
-     header("Location: .." );
+     header('Location:..');
+     exit();
   }
 ?>
 <!DOCTYPE html>
@@ -28,7 +30,7 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
             </div>
             <div class="col_6">
             <?php
-            	if (!isset($_REQUEST['email'])) //On est dans la page de connexion et pas encor connecter
+            	if (!isset($_REQUEST['email'])) //On est dans la page de connexion et pas encor connecte
                  {
                  echo '
                 <form>
@@ -49,9 +51,9 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
                		if ($user != NULL) {
                			$mdpentre=$_REQUEST['password'];
                			if (($user->getPassword()  == sha1($mdpentre))){//etat active
-               				$_SESSION['user'] = serialize($user);
-               				header('Location: '. $user->getProfil());
-               				die("<meta http-equiv='refresh' content=0;URL=".$user->getProfil().">");
+               				$_SESSION['utilisateur'] = serialize($user);
+               				header('Location:..');
+               				//die("<meta http-equiv='refresh' content=0;URL=".$user->getProfil().">");
                			}
                			else{//erreur 
                				//on doit refaire le log
