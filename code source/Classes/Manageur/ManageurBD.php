@@ -1,33 +1,8 @@
 
-<?php
-
-// Connexion au service XE (i.e. la base de données) sur la machine "localhost"
- $conn = oci_pconnect('darcia', 'passer', 'localhost/XE');
-
- 
-if (!$conn) {
-	
-    $e = oci_error();
-    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-}
-
-$stid = oci_parse($conn, 'SELECT nom  FROM utilisateurs');
-oci_execute($stid);
-
-echo "<table border='1'>\n";
-while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-    echo "<tr>\n";
-    foreach ($row as $item) {
-        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "") . "</td>\n";
-    }
-    echo "</tr>\n";
-}
-echo "</table>\n";
-
-?>
 
 <?php
-require(dirname(__FILE__)."/../M_Utilisateur/Utilisateur.php");
+require_once  (dirname(__FILE__)."/../M_Utilisateur/Utilisateur.php");
+require_once(dirname(__FILE__)."/../M_Utilisateur/GroupeUtilisateur.php");
 class ManageurUtilisateur{
 	/**
 	 * Instance de la classe ManageurBD:singleton
@@ -108,17 +83,17 @@ class ManageurUtilisateur{
 	/*methodes de manipulation des utilisateurs */
 
 	 public function addUtilisateur(Utilisateur $uti){
-		$q = $this->getPDO()->prepare('INSERT INTO utilisateurs SET password = :password, nom = :nom, prenom = :prenom,  email = :email, profil = :profil');
-		$q->bindValue(':nom', $uti->getNom());
-		$q->bindValue(':prenom', $uti->getPrenom()); 
-		$q->bindValue(':email', $uti->getEmail());
-		$q->bindValue(':profil', $uti->getProfil());
-		$q->bindValue(':password', $uti->getPassword());
+		$q = $this->getPDO()->prepare("insert into utilisateurs values ('nom','prenom','email','mdp','profil',
+(select REF(a) from GROUPES_UTILISATEUR a where a.nom='administrateur'),
+(select REF(a) from STRUCTURES a where a.nom='oxfam' ))");
+// 		$q->bindValue(':nom', $uti->getNom());
+// 		$q->bindValue(':prenom', $uti->getPrenom()); 
+// 		$q->bindValue(':email', $uti->getEmail());
+// 		$q->bindValue(':profil', $uti->getProfil());
+// 		$q->bindValue(':password', $uti->getPassword());
 		$q->execute();
 		//on infor l objet de son id dans la base
-		$uti->hydrate(array(
-				'id' => $this->getPDO()->lastInsertId()
-		));
+		
 	}
 	 public function countUtilisateur($options){
 		$utilisateurs = array();
@@ -172,11 +147,11 @@ class ManageurUtilisateur{
 	 public function getListUtilisateur(){
 	 	//echo var_dump( $options);
 		$utilisateurs = array();
-		$q = $this->getPDO()->prepare('SELECT nom,prenom,email,profil FROM utilisateurs ');
+		$q = $this->getPDO()->prepare('SELECT a.nom,a.prenom,a.email,profil,
+				a.STRUCTURE.nom as structure,a.GROUPE_UTILISATEUR.nom as groupeUtilisateur FROM utilisateurs a');
 		$q->execute();
 		$tas=$q->fetchAll(PDO::FETCH_ASSOC);
-		//$rows = $q->fetchAll(PDO::FETCH_CLASS, 'ArrayObject');
-		 foreach ( $tas  as $donnees){
+		foreach ( $tas  as $donnees){
 		 	 
 		 $utilisateurs[] = new Utilisateur($donnees); 
 		}
@@ -184,12 +159,18 @@ class ManageurUtilisateur{
 		unset($q);unset($tas);		
 		return $utilisateurs;
   }
+
+  public function countGroupe(){
+  	$utilisateurs = array();
+  	$q = $this->getPDO()->prepare('SELECT COUNT(*)  FROM GROUPES_UTILISATEUR ');
+  	$q->execute();
+  	return $q->fetchColumn();
+  
+  }
 	public function update(Utilisateur $uti){
-		$q = $this->getPDO()->prepare('UPDATE utilisateurs SET nom = :nom, prenom = :prenom, adresse = :adresse, telephone = :telephone,  email = :email,profil = :profil, password = :password WHERE id = :id');
-		$q->bindValue(':id', $uti->getId(), PDO::PARAM_INT);
+		$q = $this->getPDO()->prepare('UPDATE utilisateurs SET nom = :nom, prenom = :prenom,   email = :email,profil = :profil, password = :password WHERE email = :email');
 		$q->bindValue(':nom', $uti->getNom(), PDO::PARAM_INT);
 		$q->bindValue(':prenom', $uti->getPrenom(), PDO::PARAM_INT);
-		$q->bindValue(':adresse', $uti->getAdresse(), PDO::PARAM_INT);
 		$q->bindValue(':email', $uti->getEmail(), PDO::PARAM_INT);
 		$q->bindValue(':profil', $uti->getProfil(), PDO::PARAM_INT);
 		$q->bindValue(':password', $uti->getPassword(), PDO::PARAM_INT);
@@ -197,13 +178,36 @@ class ManageurUtilisateur{
 		$q->closeCursor();
 	}
 
-	public function getListUtilisateurNew(){
-	 	
+public function getListStructure(){
+	 	//echo var_dump( $options);
+		$structures = array();
+		$q = $this->getPDO()->prepare("select  a.nom from STRUCTURES a ");
+		$q->execute();
+		$tas=$q->fetchAll(PDO::FETCH_ASSOC);
+		//$rows = $q->fetchAll(PDO::FETCH_CLASS, 'ArrayObject');
+		 foreach ( $tas  as $donnees){
+		 	 
+		 $structures[] = new Structure($donnees); 
+		}
+		$q->closeCursor();
+		unset($q);unset($tas);		
+		return $structures;
   }
-  	 public function countUtilisateurNew(){
-	
-	}
- 
+  public function getListGroupe(){
+  	//echo var_dump( $options);
+  	$groupeutilisateurs = array();
+  	$q = $this->getPDO()->prepare('SELECT g.nom FROM GROUPES_UTILISATEUR g ');
+  	$q->execute();
+  	$tas=$q->fetchAll(PDO::FETCH_ASSOC);
+  	//$rows = $q->fetchAll(PDO::FETCH_CLASS, 'ArrayObject');
+  	foreach ( $tas  as $donnees){
+  		  
+  		$groupeutilisateurs[] = new GroupeUtilisateur($donnees);
+  	}
+  	$q->closeCursor();
+  	unset($q);unset($tas);
+  	return $groupeutilisateurs;
+  }
 }//fin class ManageurDb
 
 //c
