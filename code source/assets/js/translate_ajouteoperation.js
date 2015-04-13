@@ -10,7 +10,7 @@ $(document).ready(function () {
 
 function loadBundles(lang) {
     $.i18n.properties({
-        name: 'Messages',
+        name: 'ajouteoperation',
         path: 'assets/bundle/',
         mode: 'both',
         language: lang,
