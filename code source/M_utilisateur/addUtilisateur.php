@@ -53,9 +53,8 @@ if( isset($_REQUEST["modification"])){//deuxieme entree sur la page execution de
 		}
 		$manageur->update($_user);
 		//apres la modification on revien a la page de de gestion des utilisateur
-		//header("Location: gestion_utilisateurs.php");
-		//exit();
-		echo "modification ok";
+		header("Location: gestion_utilisateurs.php");
+		exit();
 }
 if( isset($_REQUEST["ajout"])){//pour ajouter
 	$_user=new Utilisateur(array());
