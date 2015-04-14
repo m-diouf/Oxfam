@@ -90,14 +90,14 @@ class Manageur2{
 	//fonction permettant d'ajouter un mois
 	public function addMois(Mois $m){
 
-		$request = 'insert into Mois(code, libelle, etat)'.
+		$request = $this->getPDO()->prepare('insert into Mois(code, libelle, etat)'.
 					'values (:code, :lib , :etat)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':code', $m->getCode);
-		oci_bind_by_name($insert, ':lib', $m->getLibelle);
-		oci_bind_by_name($insert, ':etat', $m->getEtat);
-
-		$execute = oci_execute($insert);
+		//$insert = oci_parse($this->getPDO(), $request);
+		$request->bindeValue(':code', $m->getCode);
+		$request->bindeValue(':lib', $m->getLibelle);
+		$request->bindeValue(':etat', $m->getEtat);
+		$request->execute();
+		//$execute = oci_execute($insert);
 		if ($execute != 0){
 			echo "reussi";
 		}
@@ -106,14 +106,16 @@ class Manageur2{
 		return $execute;
 	}
 	 public function addEltPlanMensuel($options){
-	 	$request = 'insert into ElementPlanMensuel(code, libelle, montant)'.
+	 	$request =  $this->getPDO()->prepare('insert into ElementPlanMensuel(code, libelle, montant)'.
 					'values (:code, :lib , :montant)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':code', $m->getCode);
-		oci_bind_by_name($insert, ':lib', $m->getLibelle);
-		oci_bind_by_name($insert, ':montant', $m->getMontant);
-
-		$execute = oci_execute($insert);
+		//$insert = oci_parse($this->getPDO(), $request);
+		$request->bindeValue(':code', $m->getCode);
+		$request->bindeValue( ':lib', $m->getLibelle);
+		$request->bindeValue( ':montant', $m->getMontant);
+		
+		//execution
+		$request->execute();
+		//$execute = oci_execute($insert);
 		if ($execute != 0){
 			echo "reussi";
 		}
@@ -125,14 +127,15 @@ class Manageur2{
 	//fonction permettant d'ajouter une ligne budget
 	
 	 public function addLigneBudget(LigneBudget $l){
-	 	$request = 'insert into LigneBudget(libelle, montantprevu, montantexecute)'.
+	 	$request = $this->getPDO()->prepare('insert into LigneBudget(libelle, montantprevu, montantexecute)'.
 					'values (:lib, :mntprev, :mntexec)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':lib', $l->getLibelle);
-		oci_bind_by_name($insert, ':mntprev', $l->getMontantPrevu);
-		oci_bind_by_name($insert, ':mntexec', $l->getMontantExecute);
-
-		$execute = oci_execute($insert);
+		//$insert = oci_parse($this->getPDO(), $request);
+		$request->bindeValue(':lib', $l->getLibelle);
+		$request->bindeValue(':mntprev', $l->getMontantPrevu);
+		$request->bindeValue(':mntexec', $l->getMontantExecute);
+   
+		//$execute = oci_execute($insert);
+		$request->execute();
 		if ($execute != 0){
 			echo "reussi";
 		}
