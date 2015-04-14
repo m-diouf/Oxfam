@@ -56,10 +56,16 @@ class Manageur2{
 	* @return void
 	* @see PDO::__construct()
 	* @access private
-	*/
-	private function __construct(){
-		$conn = oci_pconnect('riki', 'passer', 'localhost/XE');
-	 }
+	*/private function __construct(){
+            try{
+                $this->PDOInstance  = new PDO("oci:dbname=".'localhost/XE','riki','passer',
+                    array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+    
+            }catch(PDOException $e){
+                echo ($e->getMessage());
+            }
+    
+         }
 	/**
 	* Crée et retourne l'objet Manageur2 : Singleton
 	*
@@ -67,21 +73,21 @@ class Manageur2{
 	* @static
 	* @param void
 	* @return Manageur2 $instance
-	*/
-		public static function getInstance(){
-		if(is_null(self::$instance)){
-			self::$instance = new Manageur2();
-		}
-		return self::$instance;
-	}
-
-	
-	public function getPDO(){
-		$conn = oci_pconnect('riki', 'passer', 'localhost/XE');
-		return $conn;
-	}
+	*/public static function getInstance(){
+            if(is_null(self::$instance)){
+            self::$instance = new ManageurBudget();
+            }
+            return self::$instance;
+        }
+        public function getPDO(){
+            $this->PDOInstance  = new PDO("oci:dbname=".'localhost/XE','riki','passer',
+            	array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+            return $this->PDOInstance ;
+    
+        }
 	/*methodes de manipulation des utilisateurs */
 
+	//fonction permettant d'ajouter un mois
 	public function addMois(Mois $m){
 
 		$request = 'insert into Mois(code, libelle, etat)'.
@@ -116,6 +122,8 @@ class Manageur2{
 		return $execute;
 	 
 	}
+	//fonction permettant d'ajouter une ligne budget
+	
 	 public function addLigneBudget(LigneBudget $l){
 	 	$request = 'insert into LigneBudget(libelle, montantprevu, montantexecute)'.
 					'values (:lib, :mntprev, :mntexec)'; 
@@ -132,7 +140,8 @@ class Manageur2{
 			echo "erreur exe: ".$execute;
 		return $execute;
 	}
-
+	//fonction qui retourne la liste des mois d'une annee comptable 
+	
 	public function listMois(AnneeComptable $an){
 		$tab = array();
 		$i = 0;
