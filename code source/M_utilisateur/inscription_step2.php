@@ -2,15 +2,15 @@
 session_start();
 require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
   if (isset($_SESSION['utilisateur'])){//si existe un utilisateur connecter on peut pas poursuivre l insciption
-	// header("Location: ..");
+	header("Location: ../accueil.php");
   }
   //verification k on vien bien de l etape 1
   if ((isset($_REQUEST['code'])) && (isset($_SESSION['code']))){
   	if ($_REQUEST['code']!=$_SESSION['code'] ) //si l code n conrespond pas
-  	{//die("<meta http-equiv='refresh' content=0;URL='inscription_step1.php'>");
+  	{die("<meta http-equiv='refresh' content=0;URL='inscription_step1.php'>");
   	}
   }else{
-  	//die("<meta http-equiv='refresh' content=0;URL='inscription_step1.php'>");
+  	die("<meta http-equiv='refresh' content=0;URL='inscription_step1.php'>");
   	}//si les variable n existe pas
   
 	$manageur=ManageurUtilisateur::getInstance();
@@ -177,7 +177,7 @@ require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php'
 		<div class="frontoffstat_piedpage">
 		Infos OXFAM / Phone / Adresse / etc. 
 		</div>
-		<hr / class="ligne_rouge">
+		<hr class="ligne_rouge" />
 </footer>
  
 

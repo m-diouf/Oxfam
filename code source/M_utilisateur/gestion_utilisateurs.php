@@ -3,15 +3,20 @@ require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php'
 $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de donneeq
   // ---------------------------- gestion de la securité -------------------------
     session_start();
-
   if (!isset($_SESSION['user'])){
-  	//regarde pour l instant on en fait fie d etre co
-    //header('Location:  connexion.php');
+  
+    header('Location:  connexion.php');
+    exit();
   }
-    if (isset($_SESSION['user'])){
-	 $user =  unserialize($_SESSION['user']);
-	   if (($user->getProfil())!='administrateur')
-     		header("Location: ..");
+    //redirection suivant le profil de l utilisateur
+    if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
+	   if (($user->getProfil())=='agenprojet'){//si c est un agent projet on le redirige
+	   	header("Location: ..");exit();
+	   }
+	   if (($user->getProfil())=='agenprojet'){//si c est un agent oxfam on le redirige
+	   	header("Location: ..");exit();
+	   }
   }
 // --------------------------------------------------------------------------------
 ?>
@@ -35,14 +40,24 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
 		
 <script>
 var emailsUtilisateursChecked=new Array();
+//Array Remove 
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
 //fonction appele a c chak fois k il y a un check ou uncheck pour prendre
 //l email des utilisateurt checked
+function checkall(input){
+	alert(input.value);
+}
 function eventCheck(email){
 	i=0;
 	//on cherche l email dans le tableau
 	while(i<emailsUtilisateursChecked.length){
 		if(emailsUtilisateursChecked[i]==email){//si on le trouve on l enleve et on kitte
-			//regarde remove l email
+			emailsUtilisateursChecked.remove(i);
+			//alert(emailsUtilisateursChecked);
 			return ;
 		}
 
@@ -53,7 +68,7 @@ function eventCheck(email){
 	emailsUtilisateursChecked.push(email);
 	//alert(emailsUtilisateursChecked);
 }
-function modifyUser(email) {
+function modifyUser() {
 		if(emailsUtilisateursChecked.length>1 || emailsUtilisateursChecked.length<1){
 			alert("veillez  cocher un et un seul  utilisateur pour la modification");
 			return;
@@ -74,7 +89,7 @@ function modifyUser(email) {
 	 xmlhttp.open("GET","addUtilisateur.php?modifier=1&&email="+email,true);
 	  xmlhttp.send();
 	}
-	function addUser(email) {
+	function addUser() {
 		email="darcia@yahoo.fr";
 		 
 	  if (window.XMLHttpRequest) {
@@ -91,7 +106,12 @@ function modifyUser(email) {
 	 xmlhttp.open("GET","addUtilisateur.php?ajouter=1&email="+email,true);
 	  xmlhttp.send();
 	}
-	function deleteUser(id) {
+	function deleteUser() {
+		if(emailsUtilisateursChecked.length>1 || emailsUtilisateursChecked.length<1){
+			alert("veillez  cocher un et un seul  utilisateur pour la suppression");
+			return;
+		}
+		email=emailsUtilisateursChecked[0];
 		 
 	  if (window.XMLHttpRequest) {
 		    // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -101,10 +121,10 @@ function modifyUser(email) {
 	  }
 	  xmlhttp.onreadystatechange=function() {
 		    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-		      document.getElementById("deleteUser").innerHTML=xmlhttp.responseText;
+		      document.getElementById("modifUser").innerHTML=xmlhttp.responseText;
 		    }
 		  }
-		 xmlhttp.open("GET","../php/ajax/deleteuser.php?rechercher=1&&id="+id,true);
+		 xmlhttp.open("GET","deleteuser.php?rechercher=1&&email="+email,true);
 		 xmlhttp.send();
 	}
 	
@@ -121,7 +141,7 @@ function modifyUser(email) {
 		      document.getElementById("deleteUser").innerHTML=xmlhttp.responseText;
 		    }
 		  }
-		 xmlhttp.open("GET","../php/ajax/deleteuser.php?suppr=1&&id="+id,true);
+		 xmlhttp.open("GET","deleteuser.php?suppr=1&&id="+id,true);
 		 xmlhttp.send();
 	}
 	
@@ -201,9 +221,9 @@ function modifyUser(email) {
 				</div>
 			</div>
 			<div class="col_6">
-			<a href="#" title="ajouter"  onclick="addUser('');" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
-			<a href="#" title="Modifier"  onclick="modifyUser('');" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
-			<a href="#" title="Supprimer"  onclick="modifyUser(this.id);" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
+			<a href="#" title="ajouter"  onclick="addUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
+			<a href="#" title="Modifier"  onclick="modifyUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
+			<a href="#" title="Supprimer"  onclick="deleteUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
 			
 			</div>
 			<div class="col_4 fright txtalignright">
@@ -211,63 +231,52 @@ function modifyUser(email) {
 					<i class="icon-remove-sign icon-large"></i>Alerte Opération / Dépassement <a href="#close"class="icon-remove"></a>
 				</div>
 			</div>
+			<table class="sortable striped col_11 " cellpadding="0" cellspacing="0" id="userTable">
+					<caption>
+						<h1 class="bloc100  blue_menu"> Liste des Groupes d 'utilisateurs</h6>
+					</caption>
+                                    <thead>
+                                        <tr>
+                                        	<th><input onchange="checkall(this)" type="checkbox" /> </th>
+                                            <th width="20%">Prenom </th>
+											<th width="10%">Nom </th>
+											<th width="20%">Email </th>
+											<th width="10%">Profil </th>
+											<th width="20%"> Structure </th>
+											 <th width="20%"> Groupe </th>
+                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         <?php 
+                                       
+					                         $lesutilisateurs=$manageur->getListUtilisateur();
+							
+											//echo var_dump($lesutilisateurs);
+											foreach ($lesutilisateurs as $user){
+											?>	
+											<tr class="" >
+											<td>
+											 <input name="iduser" value="<?php echo $user->getEmail();?>"  type="checkbox" onchange="eventCheck(this.value)" />
+											</td>
+					                        <td><?php  echo $user->getPrenom() ?>	</td>
+					                        <td><?php  echo $user->getNom() ?>	</td>
+					                        <td><?php  echo $user->getEmail() ?>	</td>
+					                        <td><?php  echo $user->getProfil() ?>	</td>
+					                        <td><?php  echo $user->getStructure() ?>	</td>
+					                         <td><?php  echo $user->getGroupeUtilisateur() ?>	</td>
+					                        </tr>
+																 
+											<?php 
+											}	
+					
+					                        ?>                          
+                                       
+                                    </tbody>
+                                </table>
 			<div class="col_12 bar">
 				<a href="#" onclick="masquerTab('bq1',document.getElementById('opbq1').value,'opbq1');"> <span class="col_1 icon-arrow-down fsize30 sourismain"></span></a>
-				<table class="sortable striped col_11 " cellpadding="0" cellspacing="0">
-					<caption>
-						<h6 class="bloc100  blue_menu"> Liste des Groupes d 'utilisateurs</h6>
-					</caption>
-					<thead>
-						<tr class="alt first last ">
-							<th>
-							<input type="checkbox" />
-							</th>
-							<th width="20%">Prenom </th>
-							<th width="20%">Nom </th>
-							<th width="30%">Email </th>
-							<th width="20%">Profil </th>
-							<th width="20%"> Structure </th>
-							<th width="20%"> Groupe </th>
-
-							<th></th>
-						</tr>
-					</thead>
-					<tbody id="bq1">
-						<?php 
-                                       
-                         $lesutilisateurs=$manageur->getListUtilisateur();
-		
-						//echo var_dump($lesutilisateurs);
-						foreach ($lesutilisateurs as $user){
-						?>	
-						<tr class="" >
-						<td>
-						<input name="iduser" value="<?php echo $user->getEmail();?>"  type="checkbox" onchange="eventCheck(this.value)" />
-						</td>
-                        <td><?php  echo $user->getPrenom() ?>	</td>
-                        <td><?php  echo $user->getNom() ?>	</td>
-                        <td><?php  echo $user->getEmail() ?>	</td>
-                        <td><?php  echo $user->getProfil() ?>	</td>
-                        <td><?php  echo $user->getStructure() ?>	</td>
-                        <td><?php  echo $user->getGroupeUtilisateur() ?>	</td>
-                        </tr>
-											 
-						<?php 
-						}	
-
-                        ?>
-					</tbody>
-					<tfoot>
-						<tr class="">
-							<td></td>
-							<td></td>
-							<td class="bordure"> Total utilisateur <?php echo $manageur->countUtilisateur(array())?> </td>
-							<td class="bordure"> Bloques  1</td>
-							<td class="bordure"> actifs 1 </td>
-							<td></td>
-						</tr>
-					</tfoot>
-				</table>
+			<!-- ok -->
 				<br />
 				<img class="col_12" src="../assets/img/separateur.png" height="4" />
 				<br />
@@ -309,4 +318,35 @@ function modifyUser(email) {
                         <!-- /.panel-body -->
                     </div>
  </div>
+	<!-- DataTables JavaScript -->
+    <script src="../assets/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="../assets/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({	
+            language: {
+                processing:     "Traitement en cours...",
+                search:         "Rechercher&nbsp;:",
+                lengthMenu:    "Afficher _MENU_ utilisateurs",
+                info:           "Affichage de l'utilisateur _START_ &agrave; _END_ sur _TOTAL_ utilisateurs",
+                infoEmpty:      "Affichage de l'utilisateur 0 &agrave; 0 sur 0 utilisateurs",
+                infoFiltered:   "(filtr&eacute; de _MAX_ utilisateurs au total)",
+                infoPostFix:    "",
+                loadingRecords: "Chargement en cours...",
+                zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                emptyTable:     "Aucune donnée disponible dans le tableau",
+                paginate: {
+                    first:      "Premier",
+                    previous:   "Pr&eacute;c&eacute;dent",
+                    next:       "Suivant",
+                    last:       "Dernier"
+                },
+                aria: {
+                    sortAscending:  ": activer pour trier la colonne par ordre croissant",
+                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                }
+            },
+            });
+    } );
+    </script>
 </html>

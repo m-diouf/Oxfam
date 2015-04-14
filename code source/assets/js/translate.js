@@ -7,6 +7,7 @@ $(document).ready(function() {
 		loadBundles(selection !== 'browser' ? selection : $.i18n.browserLang());
 	});
 });
+
 function loadBundles(lang) {
 	$.i18n.properties({
 		name : 'Messages',
@@ -14,6 +15,6 @@ function loadBundles(lang) {
 		mode : 'both',
 		language : lang,
 		callback : function() {
-			//Here
+			$("#msg_welcome").text(msg_welcome);
 		}
 	});

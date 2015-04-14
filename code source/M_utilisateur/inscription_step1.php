@@ -1,7 +1,7 @@
 <?php session_start();  
 require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
- if (isset($_SESSION['user'])){
-	 $user =  unserialize($_SESSION['user']);
+ if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
 	   if (($user->getProfil())!='administrateur')
      		header("Location: .." );
 }
